@@ -55,3 +55,22 @@ A relational academic database built in PostgreSQL paired with an automated Bash
   * Queries database records dynamically before insertion to prevent duplicate records.
   * Retrieves generated foreign keys (`major_id`, `course_id`) on the fly to populate relational links in `majors_courses`.
   * Handles missing/unmatched foreign key values by dynamically injecting SQL `null` literals into the database insert payloads.
+    
+---
+
+### 5. Student Database & Advanced Query Analytics (Part 2)
+An analytics-focused continuation leveraging PostgreSQL and Bash scripting (`student_info.sh`) to perform complex SQL reporting, multi-table joins, pattern matching, aggregate computations, and subquery filtering on academic records[cite: 15, 16].
+
+#### Analytics Script (`student_info.sh`)
+* **Shell-Integrated SQL Client**: Executes parameterized, non-aligned queries directly into PostgreSQL subshells (`psql -X --username=freecodecamp --dbname=students --no-align --tuples-only -c`) to parse and output query results straight to stdout[cite: 16].
+* **Filter Conditions & Pattern Matching**:
+  * Case-insensitive matching using `ILIKE` and wildcards (e.g., `ILIKE '%sa%'` or single-character wildcards `LIKE '%r_'`)[cite: 16].
+  * Alphabetical range comparisons on string data types (e.g., `course < 'D'`, `last_name >= 'R'`)[cite: 16].
+  * Boolean logic combinations (`AND`, `OR`) alongside `IS NULL` checking to query students without declared majors[cite: 16].
+* **Aggregation & Group-Level Filtering**:
+  * Precision aggregate functions such as `ROUND(AVG(gpa), 2)` to calculate summary statistics[cite: 16].
+  * Multi-column groupings using `GROUP BY major_id` combined with post-aggregation conditions via `HAVING COUNT(*) > 1`[cite: 16].
+* **Multi-Table Relational Joins**:
+  * `LEFT JOIN` operations across `majors` and `students` to identify orphan records (majors with zero declared students) alongside active student matches[cite: 16].
+  * Multi-table `FULL JOIN` and `INNER JOIN` pipelines chaining `courses`, `majors_courses`, `majors`, and `students` with `USING(key)` syntax to track enrollment distributions and isolate single-enrollment classes (`HAVING COUNT(student_id) = 1`)[cite: 16].
+  * Deduplication and sorting via `DISTINCT`, `ORDER BY ... DESC`, and pagination throttling using `LIMIT 5`[cite: 16].
