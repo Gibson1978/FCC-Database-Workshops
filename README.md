@@ -59,18 +59,18 @@ A relational academic database built in PostgreSQL paired with an automated Bash
 ---
 
 ### 5. Student Database & Advanced Query Analytics (Part 2)
-An analytics-focused continuation leveraging PostgreSQL and Bash scripting (`student_info.sh`) to perform complex SQL reporting, multi-table joins, pattern matching, aggregate computations, and subquery filtering on academic records[cite: 15, 16].
+An analytics-focused continuation leveraging PostgreSQL and Bash scripting (`student_info.sh`) to perform complex SQL reporting, multi-table joins, pattern matching, aggregate computations, and subquery filtering on academic records.
 
 #### Analytics Script (`student_info.sh`)
-* **Shell-Integrated SQL Client**: Executes parameterized, non-aligned queries directly into PostgreSQL subshells (`psql -X --username=freecodecamp --dbname=students --no-align --tuples-only -c`) to parse and output query results straight to stdout[cite: 16].
+* **Shell-Integrated SQL Client**: Executes parameterized, non-aligned queries directly into PostgreSQL subshells (`psql -X --username=freecodecamp --dbname=students --no-align --tuples-only -c`) to parse and output query results straight to stdout.
 * **Filter Conditions & Pattern Matching**:
-  * Case-insensitive matching using `ILIKE` and wildcards (e.g., `ILIKE '%sa%'` or single-character wildcards `LIKE '%r_'`)[cite: 16].
-  * Alphabetical range comparisons on string data types (e.g., `course < 'D'`, `last_name >= 'R'`)[cite: 16].
-  * Boolean logic combinations (`AND`, `OR`) alongside `IS NULL` checking to query students without declared majors[cite: 16].
+  * Case-insensitive matching using `ILIKE` and wildcards (e.g., `ILIKE '%sa%'` or single-character wildcards `LIKE '%r_'`).
+  * Alphabetical range comparisons on string data types (e.g., `course < 'D'`, `last_name >= 'R'`).
+  * Boolean logic combinations (`AND`, `OR`) alongside `IS NULL` checking to query students without declared majors.
 * **Aggregation & Group-Level Filtering**:
-  * Precision aggregate functions such as `ROUND(AVG(gpa), 2)` to calculate summary statistics[cite: 16].
-  * Multi-column groupings using `GROUP BY major_id` combined with post-aggregation conditions via `HAVING COUNT(*) > 1`[cite: 16].
+  * Precision aggregate functions such as `ROUND(AVG(gpa), 2)` to calculate summary statistics.
+  * Multi-column groupings using `GROUP BY major_id` combined with post-aggregation conditions via `HAVING COUNT(*) > 1`.
 * **Multi-Table Relational Joins**:
-  * `LEFT JOIN` operations across `majors` and `students` to identify orphan records (majors with zero declared students) alongside active student matches[cite: 16].
-  * Multi-table `FULL JOIN` and `INNER JOIN` pipelines chaining `courses`, `majors_courses`, `majors`, and `students` with `USING(key)` syntax to track enrollment distributions and isolate single-enrollment classes (`HAVING COUNT(student_id) = 1`)[cite: 16].
-  * Deduplication and sorting via `DISTINCT`, `ORDER BY ... DESC`, and pagination throttling using `LIMIT 5`[cite: 16].
+  * `LEFT JOIN` operations across `majors` and `students` to identify orphan records (majors with zero declared students) alongside active student matches.
+  * Multi-table `FULL JOIN` and `INNER JOIN` pipelines chaining `courses`, `majors_courses`, `majors`, and `students` with `USING(key)` syntax to track enrollment distributions and isolate single-enrollment classes (`HAVING COUNT(student_id) = 1`).
+  * Deduplication and sorting via `DISTINCT`, `ORDER BY ... DESC`, and pagination throttling using `LIMIT 5`.
