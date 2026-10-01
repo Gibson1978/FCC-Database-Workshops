@@ -36,3 +36,23 @@ A relational database designed to track Nintendo characters, physical traits, so
 * DDL constraint enforcement: `PRIMARY KEY`, `FOREIGN KEY ... REFERENCES`, `UNIQUE`, and `NOT NULL`[cite: 6].
 * Sequence generation and `SERIAL`-equivalent auto-incrementing integer keys[cite: 6].
 * Data integrity types including `numeric(4,1)`, `date`, `varchar`, and nullability handling[cite: 6].
+
+---
+
+### 4. Student Database & Automation (Part 1)
+A relational academic database built in PostgreSQL paired with an automated Bash ingestion pipeline to parse, transform, and load CSV data while enforcing referential integrity[cite: 13, 14].
+
+#### Schema & Architecture
+* **`majors`**: Defines degree programs (e.g., Database Administration, Data Science, Web Development) with auto-incrementing surrogate keys[cite: 14].
+* **`courses`**: Catalog of curriculum offerings (e.g., Data Structures and Algorithms, SQL, Machine Learning)[cite: 14].
+* **`students`**: Stores student profiles, tracking `first_name`, `last_name`, academic performance via a `numeric(2,1)` fixed-point `gpa`, and an optional foreign key (`major_id`) allowing `NULL` values to support undeclared majors[cite: 14].
+* **`majors_courses`**: Junction table implementing a **Many-to-Many (N:M)** relationship between majors and courses, secured by a composite primary key (`PRIMARY KEY (major_id, course_id)`) and dual foreign key constraints[cite: 14].
+
+#### Automated ETL Pipeline (`insert_data.sh`)
+* **Pipeline Orchestration**: Uses Bash with internal PostgreSQL client subshells (`psql -X --username=freecodecamp --dbname=students --no-align --tuples-only -c`) to automate database migrations and data entry[cite: 13].
+* **Batch Initialization**: Executes a complete table reset using `TRUNCATE students, majors, courses, majors_courses` before processing input files[cite: 13].
+* **Delimited File Parsing**: Processes comma-separated feeds (`courses.csv` and `students.csv`) line-by-line via `while IFS=',' read` loops while stripping CSV header rows[cite: 13].
+* **Idempotent Inserts & Dynamic Key Resolution**:
+  * Queries database records dynamically before insertion to prevent duplicate records[cite: 13].
+  * Retrieves generated foreign keys (`major_id`, `course_id`) on the fly to populate relational links in `majors_courses`[cite: 13].
+  * Handles missing/unmatched foreign key values by dynamically injecting SQL `null` literals into the database insert payloads[cite: 13].
