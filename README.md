@@ -74,3 +74,32 @@ An analytics-focused continuation leveraging PostgreSQL and Bash scripting (`stu
   * `LEFT JOIN` operations across `majors` and `students` to identify orphan records (majors with zero declared students) alongside active student matches.
   * Multi-table `FULL JOIN` and `INNER JOIN` pipelines chaining `courses`, `majors_courses`, `majors`, and `students` with `USING(key)` syntax to track enrollment distributions and isolate single-enrollment classes (`HAVING COUNT(student_id) = 1`).
   * Deduplication and sorting via `DISTINCT`, `ORDER BY ... DESC`, and pagination throttling using `LIMIT 5`.
+ 
+ ---
+
+### 6. Advanced Bash Scripting, Streams & Text Processing
+A practical workshop on Unix I/O streams, terminal redirections, and command-line text processing utilities to inspect, parse, and transform corpus data files.
+
+#### I/O Stream Redirection
+- **Standard Input (`stdin`, `<`)**: Redirects external file content into interactive scripts without manual terminal entry (e.g., `< name.txt`).
+- **Standard Output (`stdout`, `>`)**: Directs program output streams into target destination files (e.g., `> stdout.txt`).
+- **Standard Error (`stderr`, `2>`)**: Isolates terminal diagnostics and execution failure logs into error dumps (e.g., `2> stderr.txt`) without polluting primary stdout pipelines.
+
+#### Core CLI Processing Utilities
+- **`wc` (Word Count)**:
+  - Line counting via `-l`.
+  - Word frequency counting via `-w`.
+  - Byte and character measurement via `-m`.
+- **`grep` (Global Regular Expression Print)**:
+  - Pattern matching with visual term highlights using `--color`.
+  - Extracting precise matching substrings via `-o`.
+  - Matching line totals via `-c`.
+  - Locating line numbers for matches using `-n`.
+- **`sed` (Stream Editor)**:
+  - Global substitution pipelines (`s/find/replace/g`).
+  - Extended Regular Expressions (`-E`) to match and replace alternation patterns in text (e.g., replacing `catnip` with `dogchow`, `cat` with `dog`, and `meow|meowzer` with `woof`).
+
+#### Project Deliverables & Automation
+- **`script.sh`**: Implements basic I/O redirection validation by capturing standard input and separating stdout responses from stderr error traces.
+- **`translate.sh`**: A stream-processing script leveraging `sed -E` chaining to read input text files dynamically (`cat $1`) and translate feline-themed placeholder text into canine variations (`kitty_ipsum` to `doggy_ipsum`).
+- **`kitty_info.txt`**: An analytical reporting log generated via piped terminal utilities (`wc`, `grep`) documenting line counts, word counts, character counts, and keyword occurrence positions across multiple source files.
