@@ -103,3 +103,26 @@ A practical workshop on Unix I/O streams, terminal redirections, and command-lin
 - **`script.sh`**: Implements basic I/O redirection validation by capturing standard input and separating stdout responses from stderr error traces.
 - **`translate.sh`**: A stream-processing script leveraging `sed -E` chaining to read input text files dynamically (`cat $1`) and translate feline-themed placeholder text into canine variations (`kitty_ipsum` to `doggy_ipsum`).
 - **`kitty_info.txt`**: An analytical reporting log generated via piped terminal utilities (`wc`, `grep`) documenting line counts, word counts, character counts, and keyword occurrence positions across multiple source files.
+
+---
+
+### 7. Bike Rental Shop (CLI Application & Interactive PostgreSQL)
+An interactive terminal application built in Bash communicating directly with a PostgreSQL backend to manage real-time inventory, customer registration, and rental transactions.
+
+#### Schema & State Management
+- **`bikes`**: Tracks inventory size, type, and rental state via a `boolean DEFAULT true` flag (`available`).
+- **`customers`**: Stores client contact details enforcing a `UNIQUE(phone)` constraint to prevent duplicate profile creation.
+- **`rentals`**: Junction table logging rental transactions using automatic timestamp defaults (`date_rented date DEFAULT now()`), foreign key constraints, and a nullable `date_returned` field to distinguish active rentals from completed returns.
+
+#### Bash Architecture & Advanced CLI Patterns
+- **Pipe-to-While Formatting (`echo "$QUERY" | while read ...`)**:
+  - Iterates over raw SQL query rows using Bash word-splitting.
+  - Consumes PostgreSQL delimiter output cleanly into distinct shell variables (`BIKE_ID BAR TYPE BAR SIZE`) to format inventory listings without manual string slicing.
+- **Precision Text Sanitization via `sed`**:
+  - Injects unit quotes directly into composite query results (`sed 's/ |/"/'`).
+  - Trims unwanted leading and trailing whitespace from PSQL query outputs using regex boundary stripping (`sed -E 's/^ *| *$//g'`).
+- **Input Validation via Regex (`! =~ ^[0-9]+$` / `case`)**:
+  - Uses the Bash negative regex comparison operator (`! =~`) against `^[0-9]+$` to guard numeric input fields and deflect invalid menu IDs before database queries execute.
+  - Implements recursive `case` statement routing with default catch-all fallbacks (`*)`) to retain state across failed input attempts.
+- **Transactional State Toggling**:
+  - Synchronizes rental records with inventory availability by chaining `INSERT INTO rentals` with `UPDATE bikes SET available = false` on checkout, and timestamping `date_returned = NOW()` while setting `available = true` on return.
