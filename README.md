@@ -126,3 +126,12 @@ An interactive terminal application built in Bash communicating directly with a 
   - Implements recursive `case` statement routing with default catch-all fallbacks (`*)`) to retain state across failed input attempts.
 - **Transactional State Toggling**:
   - Synchronizes rental records with inventory availability by chaining `INSERT INTO rentals` with `UPDATE bikes SET available = false` on checkout, and timestamping `date_returned = NOW()` while setting `available = true` on return.
+
+---
+
+### 8. ASCII Castle Builder
+A foundational command-line script demonstrating the use of terminal text editors, standard output, and string character formatting in Bash.
+- **Terminal Text Editing**: Edited the script file directly in the terminal by invoking the `nano <filename>` command.
+- **Nano Shortcuts**: Managed file operations within the editor by using `CTRL + o` to save edits and `CTRL + x` to exit.
+- **Script Execution**: Executed the finalized program from the command line using `bash <filename>`.
+- **Multi-line Output & Escape Characters**: Utilized the `echo` command to build and display a multi-line ASCII art castle. Addressed a formatting issue where backslashes (`\`) on the right roof sections behaved as escape characters by padding them with spaces to ensure proper visual rendering.
