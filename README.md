@@ -135,3 +135,93 @@ A foundational command-line script demonstrating the use of terminal text editor
 - **Nano Shortcuts**: Managed file operations within the editor by using `CTRL + o` to save edits and `CTRL + x` to exit.
 - **Script Execution**: Executed the finalized program from the command line using `bash <filename>`.
 - **Multi-line Output & Escape Characters**: Utilized the `echo` command to build and display a multi-line ASCII art castle. Addressed a formatting issue where backslashes (`\`) on the right roof sections behaved as escape characters by padding them with spaces to ensure proper visual rendering.
+
+---
+
+### 9. Build an SQL Reference Object
+Building an SQL reference object .json file while using and learning git commands to better understand CI (Continuous Integration) and CD (Continuous Development) in development environment.
+| File | Purpose |
+|------|---------|
+| `README.md` | Project documentation (this file). |
+| `.gitignore` | Lists files Git should not track; here it ignores `.env` so secrets are never committed. |
+| `.env` | Holds local secrets (e.g. `SECRET=MY_SECRET`); ignored by Git. |
+| `sample.env` | Template showing which variables are needed (e.g. `SECRET=`) without real values, safe to commit. |
+| `sql_reference.json` | A SQL cheat sheet written as nested key-value pairs (`database` → `create`/`drop`/`rename`, etc.), practising how to structure JSON as a quick reference. |
+
+## Git Commands
+### Setup & Inspection
+
+| Command | Description |
+|---------|-------------|
+| `git init` | Initialise a new repository. |
+| `git status` | Show changed, staged, and untracked files. |
+| `git diff` | Show unstaged changes. |
+| `git log` | Show commit history. |
+| `git log --oneline` | Compact one-line history. |
+| `git log -n` | Limit output to the last `n` commits (e.g. `git log -3`). |
+| `git show` | Show the latest commit and its changes. |
+| `git show HEAD~n` | Show a specific earlier commit, `n` commits back. |
+
+### Staging & Committing
+
+| Command | Description |
+|---------|-------------|
+| `git add .` | Stage all changes. |
+| `git commit -m "message"` | Commit staged changes with a message. |
+| `git commit --amend` | Fix the last commit message (or add staged changes to it). |
+
+### Branching
+
+| Command | Description |
+|---------|-------------|
+| `git branch <name>` | Create a branch. |
+| `git branch -d <name>` | Delete a branch. |
+| `git checkout <name>` | Switch to a branch. |
+| `git checkout -b <name>` | Create a branch and switch to it immediately. |
+| `git merge <branch>` | Merge another branch into the current one (e.g. merge a feature branch into `main`). |
+
+### Rebasing
+
+| Command | Description |
+|---------|-------------|
+| `git rebase <branch>` | Replay current branch commits on top of another branch, keeping history linear and resolving conflicts commit by commit. |
+| `git rebase --interactive HEAD~n` | Edit the last `n` commits (reword, squash, drop, reorder) in an editor such as nano. |
+| `git rebase --interactive --root` | Same, but from the very first commit. |
+
+### Stashing
+
+Temporarily shelve uncommitted changes.
+
+| Command | Description |
+|---------|-------------|
+| `git stash` | Stash current changes. |
+| `git stash list` | Show the stack of stashes. |
+| `git stash show` | Summarise the latest stash. |
+| `git stash show -p` | Show the full diff (patch) of a stash. |
+| `git stash pop` | Apply the latest stash and remove it from the stack. |
+| `git stash apply` | Apply the latest stash but keep it in the stack. |
+| `git stash drop` | Delete the latest stash. |
+
+Target a specific stash with `stash@{n}`, e.g. `git stash apply stash@{2}`, `git stash show -p stash@{1}`, `git stash drop stash@{0}`.
+
+### Resetting
+
+Move `HEAD` back to an earlier commit.
+
+| Command | Description |
+|---------|-------------|
+| `git reset HEAD~n` | Undo commits but keep the changes in the working tree (unstaged). |
+| `git reset --soft HEAD~n` | Undo commits but keep the changes staged. |
+| `git reset --hard HEAD~n` | Undo commits and discard the changes entirely. **Destructive.** |
+
+## Standard Practices
+
+- **Prefix branches and commits** with a type:
+  - `feat` for new features (e.g. `feat/login-page`, `feat: add login page`)
+  - `fix` for bug fixes (e.g. `fix/null-error`, `fix: handle null input`)
+- **Clean up history before merging** using `git rebase --interactive` to:
+  - `squash` multiple similar commits into one
+  - `drop` unnecessary commits
+- **Never commit secrets**: keep them in `.env`, ignore it in `.gitignore`, and share a `sample.env` template instead.
+
+
